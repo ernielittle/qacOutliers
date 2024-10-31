@@ -1,4 +1,4 @@
-#'@title Quick scatter plot
+#'@title Multivariate outlier detection
 #'@description Create scatter plot with linear line of best fit, correlation, and p-value
 #'@export
 #'@param data a data frame
@@ -7,27 +7,21 @@
 #'@returns a tibble with n, mean, and standard deviation
 #'@import ggplot2
 #'@import Routliers
+#'@import dplyr
 #'@examples
-#'qscatter(mtcars, wt, hp)
+#'multiOutliers(mtcars)
 #'
 
-qscatter <- function(data,x,y){
+multiOutliers <- function(data, x, y, method="mahalanobis", ...){
+  if(method=="mahalanobis"){
+    #select just the rows given by the user
+    subset <- select(data, {{x}}, {{y}})
 
-  #making them into names so they can be in the title
-  xname <- as.character(substitute(x))
-  yname <- as.character(substitute(y))
+    #make this into a matrix
+    mat <- as.matrix(subset)
 
-  #getting subtitle information
-  r <- cor.test(data[[xname]], data[[yname]])
-
-  p <- format.pval(r$p.value, 3)
-  cor <- round(r$estimate, 3)
-
-  ggplot(data=data)+
-    geom_smooth(aes(x={{x}}, y={{y}}), method="lm", se=F,
-                color='cornflowerblue', linetype=5, formula=y~x)+
-    geom_point(aes(x={{x}}, y={{y}}))+
-    theme_minimal()+
-    labs(title = paste("Relationship between", xname, "and", yname),
-         subtitle = paste("r = ", cor, "p < ", p))
+    #run matrix on function and store results
+    results <- outliers_mahalanobis(x=mat)
+    print(results)
+  }
 }
