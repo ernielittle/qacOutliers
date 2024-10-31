@@ -1,0 +1,21 @@
+Package: qacOutliers
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+   c(person("Caleb", "Henning", ,"chenning@wesleyan.edu", role = c("aut", "cre")),
+    person("Larissa", "Xu", ,"lxu01@wesleyan.edu", role="aut"),
+    person("Angelica", "Crown", ,"acrown@wesleyan.edu", role="aut"),
+    person("Ernie", "Little", ,"elittle@wesleyan.edu", role="aut"),
+    person("Braeden", "Falzarano", ,"bfalzarano@wesleyan.edu", role="aut"),
+    person("Ral", "Reyes", ,"rreyes@wesleyan.edu", role="aut"),
+    person("Tegh", "Singh", ,"tsingh@wesleyan.edu", role="aut"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Imports: 
+    dplyr,
+    ggplot2,
+    Routliers
+RoxygenNote: 7.3.2
