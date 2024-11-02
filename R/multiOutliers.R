@@ -10,7 +10,7 @@
 #'@import Routliers
 #'@import dplyr
 #'@examples
-#'multiOutliers(mtcars)
+#'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
 #'
 
 multiOutliers <- function(data, x, y, method="mahalanobis", ...){
