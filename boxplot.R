@@ -1,7 +1,7 @@
-#'@title Univariate Boxplot with Statistics
-#'@description Generate a boxplot and return statistics from base R.
-#'@param data A data frame.
-#'@param x A character string naming the numeric variable.
+#'@title Univariate Outlier Detection with Boxplot
+#'@description Generate a boxplot specifically for univariate outlier detection and return associated statistics from base R.
+#'@param data A data frame containing the variable to be analyzed.
+#'@param x A character string naming the numeric variable to assess for outliers.
 #'@returns A list containing the ggplot object and boxplot statistics.
 #'@import ggplot2
 #'@export
