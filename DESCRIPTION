@@ -17,5 +17,6 @@ Roxygen: list(markdown = TRUE)
 Imports: 
     dplyr,
     ggplot2,
-    Routliers
+    Routliers,
+    stats
 RoxygenNote: 7.3.2
