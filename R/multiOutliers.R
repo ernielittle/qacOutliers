@@ -9,6 +9,7 @@
 #'@import ggplot2
 #'@import Routliers
 #'@import dplyr
+#'@import outForest
 #'@examples
 #'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
 #'
@@ -54,6 +55,8 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
     print(results)
+  }
+
   }
   else{
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
