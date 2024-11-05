@@ -10,10 +10,10 @@
 #'@import Routliers
 #'@import dplyr
 #'@examples
-#'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
-#'
+#'multiOutliers(mtcars, disp, cyl, method="mahalanobis")
+#'multiOutliers(mtcars, method="LoF")
 
-multiOutliers <- function(data, x, y, method="mahalanobis", ...){
+multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
   #add other methods as people finish them here
 
   if(method=="LoF"){
@@ -45,24 +45,16 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     library(dplyr)
     library(Routliers)
 
-    #create error messaging here for non-numeric variables
-    xname <- as.character(substitute(x))
-    yname <- as.character(substitute(y))
-
-    if(class(data[[xname]])!="numeric" | class(data[[yname]])!="numeric"){
-      stop("Data must be numeric")
-    }
-
-    #select just the rows given by the user
-    subset <- select(data, {{x}}, {{y}})
+    #taking only numeric data
+    numeric_data <-select_if(data, is.numeric)
 
     #make this into a matrix
-    mat <- as.matrix(subset)
+    mat <- as.matrix(numeric_data)
 
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
-    print(results)
-
+    index <- results$outliers_pos
+    values <- results$outliers_val
   }
 
   if (method == "kNN") {
@@ -95,3 +87,9 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
 }
+multiOutliers(data = data.frame(SOC, HSC), method="mahalanobis")
+data(Attacks)
+SOC <- rowMeans(Attacks[,c("soc1r","soc2r","soc3r","soc4","soc5","soc6","soc7r",
+                           "soc8","soc9","soc10r","soc11","soc12","soc13")])
+HSC <- rowMeans(Attacks[,22:46])
+res <- outliers_mahalanobis(x = as.data.frame(SOC,HSC), na.rm = TRUE)
