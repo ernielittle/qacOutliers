@@ -6,28 +6,34 @@ grubbs <- function(data) {
 
   print(grubbs_result)
 
-  outlier_value <- ifelse(grubbs_result$p.value < 0.05,
-                          grubbs_result$outlier,
-                          NA)
+  # Determine if there is an outlier based on p-value
+  if (grubbs_result$p.value < 0.05) {
+    outlier_value <- grubbs_result$outlier
+  } else {
+    outlier_value <- NULL
+  }
 
+  # Create a dataframe to store values and their outlier status
   df <- data.frame(value = data)
-  df$outlier <- ifelse(data == outlier_value, "Outlier", "Normal")
+
+  # Assign outlier status for labeling
+  df$outlier <- ifelse(data %in% outlier_value, "Outlier", "Normal")
 
   df$outlier <- as.factor(df$outlier)
 
-  ggplot(df, aes(x = factor(1), y = value, color = outlier)) +
+  # Create a boxplot with all points colored blue
+  ggplot(df, aes(x = factor(1), y = value)) +
     geom_boxplot(outlier.shape = NA) +
-    geom_jitter(width = 0.2, size = 2) +
+    geom_point(color = "blue", size = 3) +  # Set all points to blue
     labs(title = "Outlier Detection using Grubbs' Test",
          x = "Data",
          y = "Values") +
     theme_minimal() +
-    scale_color_manual(values = c("Normal" = "blue", "Outlier" = "red")) +
-    guides(color = "none")
+    theme(axis.text.x = element_blank())  # Hide x-axis text for clarity
 }
 
 # Example usage:
-data <- c(2, 3, 5, 6, 7, 8, 8, 9, 10, 15)
+data <- c(2, 3, 5, 6, 7, 8, 8, 9, 10, 16)
 grubbs(data)
 
 
