@@ -5,6 +5,8 @@
 #'@param x a numeric variable
 #'@param y a numeric variable
 #'@param method character, supplies the method to be used for outlier detection
+#'@param k a k value used for the kNN method of outlier detection
+#'@param threshold the threshold used for kNN outlier detection
 #'@returns indices of detected outliers, if any
 #'@import ggplot2
 #'@import Routliers
@@ -92,11 +94,4 @@ multiOutliers <- function(data, x, y, method="mahalanobis", k = 5, threshold = 0
   else {
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
-}
-
-print.multiOutliers <- function(x, ...) {
-  require(cli)
-  cli_h1(cat("Method Chosen:", method))
-  cli_h2("Outliers \n")
-  print(x)
 }
