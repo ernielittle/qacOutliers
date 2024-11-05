@@ -42,8 +42,16 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
   }
 
   if(method=="mahalanobis"){
+    library(dplyr)
+    library(Routliers)
 
     #create error messaging here for non-numeric variables
+    xname <- as.character(substitute(x))
+    yname <- as.character(substitute(y))
+
+    if(class(data[[xname]])!="numeric" | class(data[[yname]])!="numeric"){
+      stop("Data must be numeric")
+    }
 
     #select just the rows given by the user
     subset <- select(data, {{x}}, {{y}})
@@ -54,6 +62,7 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
     print(results)
+
   }
 
   if (method == "kNN") {
@@ -86,4 +95,3 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
 }
-
