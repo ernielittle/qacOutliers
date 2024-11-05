@@ -13,7 +13,7 @@
 #'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
 #'
 
-multiOutliers <- function(data, x, y, method="mahalanobis", ...){
+multiOutliers <- function(data, x, y, method="mahalanobis", k = 5, threshold = 0.95,...){
   #add other methods as people finish them here
 
   if(method=="LoF"){
@@ -70,9 +70,6 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
       data <- as.matrix(data)
     }
 
-    threshold <- 0.95
-    k <- 5
-
     # Calculate pairwise distances
     dist_matrix <- as.matrix(dist(data))
 
@@ -89,9 +86,17 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     outliers <- which(avg_knn_distances > cutoff)
 
     # Return results
-    return(list(outliers = outliers, scores = avg_knn_distances))
+    results <- list(outliers = outliers, scores = avg_knn_distances)
+    return(results)
   }
   else {
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
+}
+
+print.multiOutliers <- function(x, ...) {
+  require(cli)
+  cli_h1(cat("Method Chosen:", method))
+  cli_h2("Outliers \n")
+  print(x)
 }
