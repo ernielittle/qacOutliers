@@ -57,7 +57,6 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     print(results)
   }
 
-  }
   else{
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
