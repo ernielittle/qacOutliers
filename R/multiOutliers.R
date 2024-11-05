@@ -55,7 +55,35 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
     results <- outliers_mahalanobis(x=mat)
     print(results)
   }
-  else{
+
+  if (method == "kNN") {
+    if (!is.matrix(data)) {
+      data <- as.matrix(data)
+    }
+
+    threshold <- 0.95
+    k <- 5
+
+    # Calculate pairwise distances
+    dist_matrix <- as.matrix(dist(data))
+
+    # Get k-nearest neighbors for each point (excluding self-distance of 0)
+    knn_scores <- apply(dist_matrix, 1, function(row) {
+      sort(row, partial = k + 1)[2:(k + 1)]
+    })
+
+    # Calculate the average distance to the k-nearest neighbors
+    avg_knn_distances <- rowMeans(knn_scores)
+
+    # Determine the outliers based on the threshold
+    cutoff <- quantile(avg_knn_distances, threshold)
+    outliers <- which(avg_knn_distances > cutoff)
+
+    # Return results
+    return(list(outliers = outliers, scores = avg_knn_distances))
+  }
+  else {
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
 }
+
