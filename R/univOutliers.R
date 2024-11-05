@@ -27,7 +27,7 @@ univOutliers <- function(data, x, method="boxplot") {
 
     # Create the ggplot boxplot
     p <- ggplot(data, aes(y = .data[[x]])) +
-      geom_boxplot(outlier.colour = "red") +
+      geom_boxplot(outlier.colour = "red", coef=1.58) +
       ggtitle(paste("Univariate Boxplot of", x)) +
       theme_minimal()
 
