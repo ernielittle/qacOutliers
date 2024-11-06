@@ -95,6 +95,18 @@ multiOutliers <- function(data, varlist, method, minPts=5, k=5, threshold =0.95,
     results <- list(outliers = outliers, scores = avg_knn_distances)
     return(results)
   }
-}
+  if(method=="iForest"){
+    if (!is.matrix(data) && !is.data.frame(data)) {
+      stop("Data should be a matrix or data frame.")
+    }
 
-multiOutliers(mtcars, method="LoF")
+    #data needs to be numeric
+    numeric_data <-select_if(data, is.numeric)
+
+    ch <- outForest(numeric_data, replace = "no" )
+
+    #actual outliers
+    results <- outliers(ch)
+    return(results)
+  }
+}
