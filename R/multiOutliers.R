@@ -4,9 +4,9 @@
 #'@param data a data frame
 #'@param varlist a list of numeric variables
 #'@param method character, supplies the method to be used for outlier detection. Methods are LoF, kNN, mahalanobis, and iForest
-#'@param minPts numeric, minimum points used for LoF outlier detection
-#'@param k a k value used for the kNN method of outlier detection
-#'@param threshold the threshold used for kNN outlier detection
+#'@param minPts (optional) numeric, minimum points used for LoF outlier detection. Default value is 5
+#'@param k (optional) a k value used for the kNN method of outlier detection. Default value is 5
+#'@param threshold (optional) the threshold used for kNN outlier detection. Default value is 0.95
 #'@returns indices of detected outliers, if any
 #'@import ggplot2
 #'@import Routliers
@@ -17,10 +17,10 @@
 #'data(mtcars)
 #'multiOutliers(mtcars, method="mahalanobis")
 #'multiOutliers(mtcars, method="LoF")
-#'mutliOutliers(mtcars, method="kNN")
-#'multiOutliers(mtcars, mthod="iForest")
+#'multiOutliers(mtcars, method="kNN")
+#'multiOutliers(mtcars, method="iForest")
 
-multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...){
+multiOutliers <- function(data, varlist, method, minPts=5, k=5, threshold =0.95, ...){
   #add other methods as people finish them here
 
   if(method=="LoF"){
@@ -43,9 +43,9 @@ multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...)
     # Append the LOF scores as a new column in the data frame
     data_with_lof <- data.frame(ID = 1:nrow(data), data, LOF_Score = lof_scores)
 
-
+    subset <- data_with_lof[data_with_lof$LOF_Score > 1, ]
     # Return the data frame with IDs, original data, and LOF scores
-    return(data_with_lof)
+    return(subset)
   }
 
   if(method=="mahalanobis"){
@@ -62,7 +62,12 @@ multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...)
     results <- outliers_mahalanobis(x=mat)
     index <- results$outliers_pos
     values <- results$outliers_val
+
+    #return results
+    results <- list(indices = index, values = values)
+    return(results)
   }
+
   if (method == "kNN") {
     if (!is.matrix(data)) {
       data <- as.matrix(data)
@@ -86,10 +91,7 @@ multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...)
     # Return results
     results <- list(outliers = outliers, scores = avg_knn_distances)
     return(results)
-
-  }
-  else {
-    stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
   }
 }
 
+multiOutliers(mtcars, method="LoF")
