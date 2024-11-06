@@ -5,6 +5,8 @@
 #'@param x a numeric variable
 #'@param y a numeric variable
 #'@param method character, supplies the method to be used for outlier detection
+#'@param k a k value used for the kNN method of outlier detection
+#'@param threshold the threshold used for kNN outlier detection
 #'@returns indices of detected outliers, if any
 #'@import ggplot2
 #'@import Routliers
@@ -13,7 +15,7 @@
 #'multiOutliers(mtcars, disp, cyl, method="mahalanobis")
 #'multiOutliers(mtcars, method="LoF")
 
-multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
+multiOutliers <- function(data, x, y, method="mahalanobis", k = 5, threshold = 0.95,...){
   #add other methods as people finish them here
 
   if(method=="LoF"){
@@ -62,9 +64,6 @@ multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
       data <- as.matrix(data)
     }
 
-    threshold <- 0.95
-    k <- 5
-
     # Calculate pairwise distances
     dist_matrix <- as.matrix(dist(data))
 
@@ -81,7 +80,8 @@ multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
     outliers <- which(avg_knn_distances > cutoff)
 
     # Return results
-    return(list(outliers = outliers, scores = avg_knn_distances))
+    results <- list(outliers = outliers, scores = avg_knn_distances)
+    return(results)
   }
   else {
     stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
