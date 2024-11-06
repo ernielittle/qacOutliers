@@ -5,16 +5,22 @@
 #'@param x a numeric variable
 #'@param y a numeric variable
 #'@param method character, supplies the method to be used for outlier detection
+#'@param k a k value used for the kNN method of outlier detection
+#'@param threshold the threshold used for kNN outlier detection
 #'@returns indices of detected outliers, if any
 #'@import ggplot2
 #'@import Routliers
 #'@import dplyr
 #'@import outForest
 #'@examples
-#'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
-#'
+#'data(Attacks)
+#'SOC <- rowMeans(Attacks[,c("soc1r","soc2r","soc3r","soc4","soc5","soc6","soc7r", "soc8","soc9","soc10r","soc11","soc12","soc13")])
+#'HSC <- rowMeans(Attacks[,22:46])
+#'multiOutliers(data = data.frame(SOC, HSC), method="mahalanbois")
+#'multiOutliers(mtcars, disp, cyl, method="mahalanobis")
+#'multiOutliers(mtcars, method="LoF")
 
-multiOutliers <- function(data, x, y, method="mahalanobis", ...){
+multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...){
   #add other methods as people finish them here
 
   if(method=="LoF"){
@@ -23,7 +29,7 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
       stop("Data should be a matrix or data frame.")
     }
 
-    # Rmove any non numeric data
+    # Remove any non numeric data
     data <- data[sapply(data, is.numeric)]
 
     # Check if there are enough points for the LOF calculation
@@ -43,21 +49,45 @@ multiOutliers <- function(data, x, y, method="mahalanobis", ...){
   }
 
   if(method=="mahalanobis"){
+    library(dplyr)
+    library(Routliers)
 
-    #create error messaging here for non-numeric variables
-
-    #select just the rows given by the user
-    subset <- select(data, {{x}}, {{y}})
+    #taking only numeric data
+    numeric_data <-select_if(data, is.numeric)
 
     #make this into a matrix
-    mat <- as.matrix(subset)
+    mat <- as.matrix(numeric_data)
 
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
-    print(results)
+    index <- results$outliers_pos
+    values <- results$outliers_val
   }
+  if (method == "kNN") {
+    if (!is.matrix(data)) {
+      data <- as.matrix(data)
+    }
 
-  else{
-    stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
+    # Calculate pairwise distances
+    dist_matrix <- as.matrix(dist(data))
+
+    # Get k-nearest neighbors for each point (excluding self-distance of 0)
+    knn_scores <- apply(dist_matrix, 1, function(row) {
+      sort(row, partial = k + 1)[2:(k + 1)]
+    })
+
+    # Calculate the average distance to the k-nearest neighbors
+    avg_knn_distances <- rowMeans(knn_scores)
+
+    # Determine the outliers based on the threshold
+    cutoff <- quantile(avg_knn_distances, threshold)
+    outliers <- which(avg_knn_distances > cutoff)
+
+    # Return results
+    results <- list(outliers = outliers, scores = avg_knn_distances)
+    return(results)
+
   }
+  else stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
 }
+
