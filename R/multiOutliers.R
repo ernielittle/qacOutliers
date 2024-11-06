@@ -11,6 +11,7 @@
 #'@import ggplot2
 #'@import Routliers
 #'@import dplyr
+#'@import outForest
 #'@examples
 #'data(Attacks)
 #'SOC <- rowMeans(Attacks[,c("soc1r","soc2r","soc3r","soc4","soc5","soc6","soc7r", "soc8","soc9","soc10r","soc11","soc12","soc13")])
@@ -62,7 +63,6 @@ multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...)
     index <- results$outliers_pos
     values <- results$outliers_val
   }
-
   if (method == "kNN") {
     if (!is.matrix(data)) {
       data <- as.matrix(data)
@@ -86,6 +86,7 @@ multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...)
     # Return results
     results <- list(outliers = outliers, scores = avg_knn_distances)
     return(results)
+
   }
   else stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
 }
