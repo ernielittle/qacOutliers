@@ -2,9 +2,9 @@
 #'@description Identifies multivariate outliers
 #'@export
 #'@param data a data frame
-#'@param x a numeric variable
-#'@param y a numeric variable
+#'@param varlist a list of numeric variables
 #'@param method character, supplies the method to be used for outlier detection
+#'@param minPts numeric, minimum points used for LoF outlier detection
 #'@param k a k value used for the kNN method of outlier detection
 #'@param threshold the threshold used for kNN outlier detection
 #'@returns indices of detected outliers, if any
