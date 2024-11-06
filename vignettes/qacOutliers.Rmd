@@ -17,3 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(qacOutliers)
 ```
+
+this is where we will add information on the package in general 
+-need to provide an overview of what outliers are and why we would detect them 
+-what methods this package includes, etc. 
