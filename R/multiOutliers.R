@@ -12,8 +12,8 @@
 #'@import Routliers
 #'@import dplyr
 #'@examples
-#'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
-#'
+#'multiOutliers(mtcars, disp, cyl, method="mahalanobis")
+#'multiOutliers(mtcars, method="LoF")
 
 multiOutliers <- function(data, x, y, method="mahalanobis", k = 5, threshold = 0.95,...){
   #add other methods as people finish them here
@@ -47,24 +47,16 @@ multiOutliers <- function(data, x, y, method="mahalanobis", k = 5, threshold = 0
     library(dplyr)
     library(Routliers)
 
-    #create error messaging here for non-numeric variables
-    xname <- as.character(substitute(x))
-    yname <- as.character(substitute(y))
-
-    if(class(data[[xname]])!="numeric" | class(data[[yname]])!="numeric"){
-      stop("Data must be numeric")
-    }
-
-    #select just the rows given by the user
-    subset <- select(data, {{x}}, {{y}})
+    #taking only numeric data
+    numeric_data <-select_if(data, is.numeric)
 
     #make this into a matrix
-    mat <- as.matrix(subset)
+    mat <- as.matrix(numeric_data)
 
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
-    print(results)
-
+    index <- results$outliers_pos
+    values <- results$outliers_val
   }
 
   if (method == "kNN") {
