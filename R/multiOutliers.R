@@ -20,7 +20,10 @@
 #'multiOutliers(mtcars, method="kNN")
 #'multiOutliers(mtcars, method="iForest")
 
-multiOutliers <- function(data, varlist, method, minPts=5, k=5, threshold =0.95, ...){
+multiOutliers <- function(data, varlist, method, minPts=5, k=5, threshold =0.95, na.rm=TRUE, ...){
+  #removing missing data
+  if(na.rm) data <- na.omit(data)
+
   #add other methods as people finish them here
 
   if(method=="LoF"){
