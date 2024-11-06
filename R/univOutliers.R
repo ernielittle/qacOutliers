@@ -1,13 +1,15 @@
-#'@title Univariate Outlier Detection with Boxplot
-#'@description Generate a boxplot specifically for univariate outlier detection and return associated statistics from base R.
+#'@title Univariate Outlier Detection
+#'@description Provides three methods for detecting univariate outliers in a dataset.
 #'@param data A data frame containing the variable to be analyzed.
 #'@param x A character string naming the numeric variable to assess for outliers.
+#'@param method A character supplying the method used for outlier detection. Methods are boxplot, mad, and grubbs.
 #'@returns A list containing the ggplot object and boxplot statistics.
 #'@import ggplot2
 #'@import Routliers
 #'@import stats
 #'@export
 #'@examples
+#'data(mtcars)
 #'univOutliers(mtcars, "mpg", method="boxplot")
 #'univOutliers(mtcars, "hp", method="boxplot")
 #'data <- c(10, 12, 10, 11, 13, 100, 10, 9, 11) # Example data
@@ -78,4 +80,6 @@ univOutliers <- function(data, x = NULL, method = "boxplot") {
     }
   }
 
-}}
+  }
+}
+

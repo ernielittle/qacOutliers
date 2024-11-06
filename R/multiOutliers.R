@@ -1,9 +1,9 @@
-#'@title Multivariate outlier detection
-#'@description Identifies multivariate outliers
+#'@title Multivariate Outlier Detection
+#'@description Identifies multivariate outliers using four different methods.
 #'@export
 #'@param data a data frame
 #'@param varlist a list of numeric variables
-#'@param method character, supplies the method to be used for outlier detection
+#'@param method character, supplies the method to be used for outlier detection. Methods are LoF, kNN, mahalanobis, and iForest
 #'@param minPts numeric, minimum points used for LoF outlier detection
 #'@param k a k value used for the kNN method of outlier detection
 #'@param threshold the threshold used for kNN outlier detection
@@ -12,13 +12,13 @@
 #'@import Routliers
 #'@import dplyr
 #'@import outForest
+#'@import dbscan
 #'@examples
-#'data(Attacks)
-#'SOC <- rowMeans(Attacks[,c("soc1r","soc2r","soc3r","soc4","soc5","soc6","soc7r", "soc8","soc9","soc10r","soc11","soc12","soc13")])
-#'HSC <- rowMeans(Attacks[,22:46])
-#'multiOutliers(data = data.frame(SOC, HSC), method="mahalanbois")
-#'multiOutliers(mtcars, disp, cyl, method="mahalanobis")
+#'data(mtcars)
+#'multiOutliers(mtcars, method="mahalanobis")
 #'multiOutliers(mtcars, method="LoF")
+#'mutliOutliers(mtcars, method="kNN")
+#'multiOutliers(mtcars, mthod="iForest")
 
 multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...){
   #add other methods as people finish them here
@@ -88,6 +88,8 @@ multiOutliers <- function(data, x, y, method, minPts, k=5, threshold =0.95, ...)
     return(results)
 
   }
-  else stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
+  else {
+    stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
+  }
 }
 
