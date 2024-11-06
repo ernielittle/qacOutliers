@@ -10,10 +10,14 @@
 #'@import Routliers
 #'@import dplyr
 #'@examples
+#'data(Attacks)
+#'SOC <- rowMeans(Attacks[,c("soc1r","soc2r","soc3r","soc4","soc5","soc6","soc7r", "soc8","soc9","soc10r","soc11","soc12","soc13")])
+#'HSC <- rowMeans(Attacks[,22:46])
+#'multiOutliers(data = data.frame(SOC, HSC), method="mahalanbois")
 #'multiOutliers(mtcars, disp, cyl, method="mahalanobis")
 #'multiOutliers(mtcars, method="LoF")
 
-multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
+multiOutliers <- function(data, x, y, method, minPts, ...){
   #add other methods as people finish them here
 
   if(method=="LoF"){
@@ -22,7 +26,7 @@ multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
       stop("Data should be a matrix or data frame.")
     }
 
-    # Rmove any non numeric data
+    # Remove any non numeric data
     data <- data[sapply(data, is.numeric)]
 
     # Check if there are enough points for the LOF calculation
@@ -83,7 +87,6 @@ multiOutliers <- function(data, x, y, method="mahalanobis", minPts, ...){
     # Return results
     return(list(outliers = outliers, scores = avg_knn_distances))
   }
-  else {
-    stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
-  }
+  else stop("Method supplied must be kNN, mahalanobis, iForest, or LoF.")
 }
+
