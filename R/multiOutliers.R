@@ -100,6 +100,9 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
 
   if(method=="iForest"){
+    library(dplyr)
+    library(outForest)
+
     if (!is.matrix(data) && !is.data.frame(data)) {
       stop("Data should be a matrix or data frame.")
     }
