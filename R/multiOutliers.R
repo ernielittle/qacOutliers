@@ -25,6 +25,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
   if(na.rm) data <- na.omit(data[,varlist])
 
   #add other methods as people finish them here
+  method <- match.arg(method, c("kNN", "LoF", "mahalanobis", "iForest"))
 
   if(method=="LoF"){
     # Check if data is a matrix or data frame and convert if necessary
