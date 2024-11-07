@@ -12,6 +12,9 @@
 
 
 print.multiOutliers <- function(x, ...) {
+  if(!inherits(x, "multiOutliers")){
+    stop("This functon requires an object created by multiOutliers")
+  }
   require(cli)
   cli_h1(cat("Method Chosen:", method))
   cli_h2("Outliers \n")
