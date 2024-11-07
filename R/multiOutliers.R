@@ -107,6 +107,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
     #actual outliers
     results <- outliers(ch)
+    class(results) <- "multiOutliers"
     return(results)
   }
 }
