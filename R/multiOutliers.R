@@ -22,7 +22,7 @@
 
 multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, threshold =0.95, na.rm=TRUE, ...){
   #removing missing data
-  if(na.rm) data <- na.omit(data)
+  if(na.rm) data <- na.omit(data[,varlist])
 
   #add other methods as people finish them here
 
