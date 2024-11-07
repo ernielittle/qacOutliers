@@ -93,8 +93,11 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
     # Return results
     results <- list(outliers = outliers, scores = avg_knn_distances)
+    class(results) <- "multiOutliers"
     return(results)
   }
+
+
   if(method=="iForest"){
     if (!is.matrix(data) && !is.data.frame(data)) {
       stop("Data should be a matrix or data frame.")
@@ -107,7 +110,6 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
     #actual outliers
     results <- outliers(ch)
-    class(results) <- "multiOutliers"
     return(results)
   }
 }
