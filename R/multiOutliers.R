@@ -60,7 +60,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     numeric_data <-select_if(data, is.numeric)
 
     #make this into a matrix
-    mat <- as.matrix(numeric_data)
+    mat <- as.matrix(numeric_data[,varlist])
 
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
