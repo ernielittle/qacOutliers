@@ -20,7 +20,7 @@
 #'multiOutliers(mtcars, method="kNN")
 #'multiOutliers(mtcars, method="iForest")
 
-#help
+
 multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, threshold =0.95, na.rm=TRUE, ...){
   #removing missing data
   if(na.rm) data <- na.omit(data[,varlist])
@@ -35,7 +35,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     }
 
     # Remove any non numeric data
-    data <- data[sapply(data[,varlist], is.numeric)]
+    data <- data[sapply(data, is.numeric)]
 
     # Check if there are enough points for the LOF calculation
     if (nrow(data) <= minPts) {
@@ -61,7 +61,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     numeric_data <-select_if(data, is.numeric)
 
     #make this into a matrix
-    mat <- as.matrix(numeric_data[,varlist])
+    mat <- as.matrix(numeric_data)
 
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
@@ -75,7 +75,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
   if (method == "kNN") {
     if (!is.matrix(data)) {
-      data <- as.matrix(data[,varlist])
+      data <- as.matrix(data)
     }
 
     # Calculate pairwise distances
@@ -109,7 +109,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     }
 
     #data needs to be numeric
-    numeric_data <-select_if(data[,varlist], is.numeric)
+    numeric_data <-select_if(data, is.numeric)
 
     ch <- outForest(numeric_data, replace = "no" )
 
