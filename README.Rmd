@@ -38,4 +38,7 @@ library(qacOutliers)
 ## basic example code
 ```
 
+## What are outliers 
+
+here we describe what outliers are even and why you would look for them 
 
