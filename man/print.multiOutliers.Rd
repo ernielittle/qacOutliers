@@ -16,6 +16,6 @@ A formatted print of the results of the "multiOutliers" function
 Prints identified multivariate outliers
 }
 \examples{
-multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
+multiOutliers(mtcars, method="mahalanobis")
 
 }

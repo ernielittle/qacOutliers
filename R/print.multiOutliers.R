@@ -6,8 +6,9 @@
 #'@import ggplot2
 #'@import Routliers
 #'@import dplyr
+#'@import cli
 #'@examples
-#'multiOutliers(mtcars, hisp, cyl, method="mahalanobis")
+#'multiOutliers(mtcars, method="mahalanobis")
 #'
 
 

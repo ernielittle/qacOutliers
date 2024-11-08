@@ -118,3 +118,5 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     return(results)
   }
 }
+
+
