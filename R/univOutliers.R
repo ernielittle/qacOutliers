@@ -22,7 +22,7 @@ univOutliers <- function(data, x = NULL, method = "boxplot") {
   # Identify numeric columns in the dataset
   numeric_columns <- sapply(data, is.numeric)
 
-  # If 'x' is not specified, use all numeric columns
+  # If 'x' is not specified, use all numeric columns in the dataset
   if (is.null(x)) {
     x <- names(data)[numeric_columns]
   } else {
