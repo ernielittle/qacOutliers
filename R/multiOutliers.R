@@ -50,6 +50,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
     subset <- data_with_lof[data_with_lof$LOF_Score > 1, ]
     # Return the data frame with IDs, original data, and LOF scores
+    class(subset) <- "multiOutliers"
     return(subset)
   }
 
@@ -66,15 +67,19 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     #run matrix on function and store results
     results <- outliers_mahalanobis(x=mat)
     index <- results$outliers_pos
-    values <- results$outliers_val
 
-    #return results
-    results <- list(indices = index, values = values)
-    return(results)
+    #isolate just rows with outliers
+    if(!is.null(index) && length(index) > 0){
+      subset <- data[index,]
+      class(subset) <- "multiOutliers"
+    } else {
+      subset <- "No outliers dectected."
+      class(subset) <- "multiOutliers"
+    }
   }
 
   if (method == "kNN") {
-    if (!is.matrix(data)) {
+    if (length(index)!=0) {
       data <- as.matrix(data)
     }
 
@@ -115,6 +120,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
 
     #actual outliers
     results <- outliers(ch)
+    class(results) <- "multiOutliers"
     return(results)
   }
 }
