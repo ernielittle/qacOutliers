@@ -7,6 +7,7 @@
 #'@param minPts (optional) numeric, minimum points used for LoF outlier detection. Default value is 5
 #'@param k (optional) a k value used for the kNN method of outlier detection. Default value is 5
 #'@param threshold (optional) the threshold used for kNN outlier detection. Default value is 0.95
+#'@param alpha (optional) the alpha used for mahalanobis distance outlier detection. Default value is 0.1
 #'@returns indices of detected outliers, if any
 #'@import ggplot2
 #'@import Routliers
@@ -21,7 +22,7 @@
 #'multiOutliers(mtcars, method="iForest")
 
 
-multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, threshold =0.95, na.rm=TRUE, ...){
+multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, threshold =0.95, alpha=0.1,na.rm=TRUE, ...){
   #removing missing data
   if(na.rm) data <- na.omit(data[,varlist])
 
@@ -65,7 +66,7 @@ multiOutliers <- function(data, varlist=names(data), method, minPts=5, k=5, thre
     mat <- as.matrix(numeric_data)
 
     #run matrix on function and store results
-    results <- outliers_mahalanobis(x=mat)
+    results <- outliers_mahalanobis(x=mat, alpha=alpha)
     index <- results$outliers_pos
 
     #isolate just rows with outliers
