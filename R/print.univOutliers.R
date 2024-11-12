@@ -7,14 +7,6 @@
 #'@import dplyr
 #'@import cli
 #'@examples
-#'outliers_boxplot <- boxplot(mtcars$mpg, plot = FALSE)
-#'outliers_grubbs <- grubbsTest(mtcars$mpg)
-#'outliers_mad <- mad(mtcars$mpg)
-#'print.univariateOutliers(outliers_boxplot)
-#'print.univariateOutliers(outliers_grubbs)
-#'print.univariateOutliers(outliers_mad)
-#'
-#'
 #'data(mtcars)
 #'outliers_boxplot <- univOutliers(mtcars, "mpg", method="boxplot")
 #'print.univariateOutliers(outliers_boxplot)
